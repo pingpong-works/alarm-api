@@ -24,19 +24,30 @@ ext {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
-	compileOnly 'org.projectlombok:lombok'
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	annotationProcessor 'org.projectlombok:lombok'
+	implementation 'org.springframework.boot:spring-boot-starter-web-services'
+	implementation 'org.springframework.boot:spring-boot-starter-websocket'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	runtimeOnly 'com.h2database:h2'
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation group: 'org.modelmapper', name: 'modelmapper', version: '2.3.8'
+	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
 
+	runtimeOnly 'com.h2database:h2'
+	implementation 'org.mapstruct:mapstruct:1.6.0'
+	annotationProcessor 'org.mapstruct:mapstruct-processor:1.6.0'
+	// Spring Cloud
+	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
 	implementation "org.springframework.cloud:spring-cloud-starter-config"
 	implementation "org.springframework.cloud:spring-cloud-starter-bootstrap"
-	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	// Kafka
+	implementation 'org.apache.kafka:kafka-streams'
+	implementation 'org.springframework.kafka:spring-kafka'
+	testImplementation 'org.springframework.kafka:spring-kafka-test'
+	// Mini.io
+	implementation 'io.minio:minio:8.5.10'
 }
 
 dependencyManagement {
