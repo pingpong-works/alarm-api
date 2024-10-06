@@ -34,6 +34,7 @@ public class KafkaConsumerConfig {
         deserializer.addTrustedPackages("com.alarm.notification");
 
         return new DefaultKafkaConsumerFactory<>(config, new StringDeserializer(), deserializer);
+
     }
 
     @Bean
