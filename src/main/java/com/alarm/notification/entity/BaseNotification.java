@@ -1,20 +1,16 @@
-package com.alarm.notification;
+package com.alarm.notification.entity;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@NoArgsConstructor
-@AllArgsConstructor
-@Entity
 @Getter
 @Setter
-public class Notification {
+@MappedSuperclass
+public abstract class BaseNotification {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -29,19 +25,5 @@ public class Notification {
     private boolean isRead = false;
 
     @Column(nullable = false)
-    private Long employeeId;
-
-    @Column
-    private Long documentId; //전자결재
-
-    @Column
-    private Long postId; //공지사항 알림
-
-    @Column
-    private Long chatId;
-
-
-    //자원예약, 근태관리 추가 필요
-
-
+    private Long employeeId; // 공통 필드로 사용
 }

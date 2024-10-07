@@ -1,5 +1,10 @@
 package com.alarm.notification;
 
+import com.alarm.kafka.NotificationMessage;
+import com.alarm.notification.entity.ApprovalNotification;
+import com.alarm.notification.entity.DocumentNotification;
+import com.alarm.notification.entity.NoticeNotification;
+import com.alarm.notification.entity.Notification;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -14,16 +19,40 @@ public class NotificationService {
     private final SseEmitterService sseEmitterService;
 
     public void saveNotification(NotificationMessage message) {
-        // 알림을 DB에 저장
-        Notification notification = new Notification();
-
-
+        Notification notification = createNotificationEntity(message);
         notificationRepository.save(notification);
+    }
+
+    private Notification createNotificationEntity(NotificationMessage message) {
+        Notification notification;
+
+        switch (message.getType()) {
+            case APPROVAL:
+                notification = new ApprovalNotification();
+                ((ApprovalNotification) notification).setApprovalId(message.getTypeId());
+                break;
+            case NOTICE:
+                notification = new NoticeNotification();
+                ((NoticeNotification) notification).setPostId(message.getTypeId());
+                break;
+            case DOCUMENT:
+                notification = new DocumentNotification();
+                ((DocumentNotification) notification).setDocumentId(message.getTypeId());
+                break;
+
+            default:
+                throw new IllegalArgumentException("Unknown notification type: " + message.getType());
+        }
+
+        notification.setMessage(message.getMessage());
+        notification.setEmployeeId(message.getEmployeeId());
+
+        return notification;
     }
 
     public void sendRealTimeNotification(NotificationMessage message) {
         // SSE로 실시간 알림 전송
-        sseEmitterService.sendToUser(message.getEmployeeId(), message);
+        sseEmitterService.sendToEmployee(message.getEmployeeId(), message);
     }
 
     public List<Notification> getUserNotifications(Long employeeId, boolean isRead) {
@@ -41,7 +70,7 @@ public class NotificationService {
     @Scheduled(cron = "0 0 0 * * ?")
     public void deleteOldNotifications() {
         // 30일 지난 읽은 알림 삭제
-        notificationRepository.deleteAllReadBefore(LocalDateTime.now().minusDays(30));
+        notificationRepository.deleteByIsReadTrueAndCreatedAtBefore(LocalDateTime.now().minusDays(30));
     }
 
     private Notification findVerifiedNotification (Long notificationId) {

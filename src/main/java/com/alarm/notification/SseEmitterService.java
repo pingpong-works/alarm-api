@@ -1,5 +1,6 @@
 package com.alarm.notification;
 
+import com.alarm.kafka.NotificationMessage;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
@@ -29,7 +30,7 @@ public class SseEmitterService {
     }
 
     // 특정 사용자에게 실시간 알림 전송
-    public void sendToUser(Long employeeId, NotificationMessage message) {
+    public void sendToEmployee(Long employeeId, NotificationMessage message) {
         SseEmitter emitter = emitters.get(employeeId);
 
         if (emitter != null) {
