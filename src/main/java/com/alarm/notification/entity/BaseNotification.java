@@ -1,14 +1,13 @@
-package com.alarm.notification;
+package com.alarm.notification.entity;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+@Getter
+@Setter
 @MappedSuperclass
 public abstract class BaseNotification {
 

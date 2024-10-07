@@ -1,15 +1,13 @@
 package com.alarm.notification;
 
+import com.alarm.notification.entity.Notification;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
+
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
-
-import java.io.IOException;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+
 
 @RestController
 @RequestMapping("/notifications")
@@ -19,12 +17,12 @@ public class NotificationController {
     private final NotificationService notificationService;
     private final SseEmitterService sseEmitterService;
 
-    // 알림 목록 조회 (읽은/안 읽은 필터링 가능)
+    // 알림 목록 조회 (읽은/안 읽은 필터링)
     @GetMapping("/{employee-id}")
-    public ResponseEntity getNotifications(
-            @PathVariable("employee-id") Long employeeId,
-            @RequestParam(required = false, defaultValue = "false") boolean isRead) {
+    public ResponseEntity getNotifications(@PathVariable("employee-id") Long employeeId,
+                                           @RequestParam(required = false, defaultValue = "false") boolean isRead) {
         List<Notification> notifications = notificationService.getUserNotifications(employeeId, isRead);
+
         return ResponseEntity.ok(notifications);
     }
 
