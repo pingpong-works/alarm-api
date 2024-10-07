@@ -1,6 +1,6 @@
 package com.alarm.config;
 
-import com.alarm.notification.NotificationMessage;
+import com.alarm.kafka.NotificationMessage;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.context.annotation.Bean;
@@ -8,8 +8,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
-
-
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 
 import java.util.HashMap;
@@ -24,14 +22,14 @@ public class KafkaConsumerConfig {
 
         //kafka 클러스터 주소
         config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
-
         config.put(ConsumerConfig.GROUP_ID_CONFIG, "alarm-api");
         config.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         config.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
 
         //역직렬화 패키지 지정
         JsonDeserializer<NotificationMessage> deserializer = new JsonDeserializer<>(NotificationMessage.class);
-        deserializer.addTrustedPackages("com.alarm.notification");
+        deserializer.addTrustedPackages("com.alarm.kafka", "com.core.kafka", "java.util", "java.lang");
+
 
         return new DefaultKafkaConsumerFactory<>(config, new StringDeserializer(), deserializer);
 
