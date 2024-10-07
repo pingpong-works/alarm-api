@@ -1,6 +1,5 @@
 package com.alarm.kafka;
 
-import com.alarm.notification.NotificationMessage;
 import com.alarm.notification.NotificationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -12,11 +11,27 @@ public class NotificationConsumer {
 
     private final NotificationService notificationService;
 
-    @KafkaListener(topics = "approval-topic", groupId = "group_1")
+    @KafkaListener(topics = "approval-topic", groupId = "alarm-api")
     public void consume(NotificationMessage message) {
-        // 메시지를 수신하고 > 알림 서비스로
+        // 메시지를 수신하고 저장
         notificationService.saveNotification(message);
         // 알림 전송
         notificationService.sendRealTimeNotification(message);
     }
+
+    @KafkaListener(topics = "document-topic", groupId = "alarm-api")
+    public void consumeDocument(NotificationMessage message) {
+
+        notificationService.saveNotification(message);
+        notificationService.sendRealTimeNotification(message);
+    }
+
+    @KafkaListener(topics = "notice-topic", groupId = "alarm-api")
+    public void consumeNotice(NotificationMessage message) {
+
+        notificationService.saveNotification(message);
+        notificationService.sendRealTimeNotification(message);
+    }
+
+
 }
