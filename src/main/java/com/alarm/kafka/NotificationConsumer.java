@@ -33,5 +33,24 @@ public class NotificationConsumer {
         notificationService.sendRealTimeNotification(message);
     }
 
+    @KafkaListener(topics = "book-car-topic", groupId = "alarm-api")
+    public void consumeBookCar (NotificationMessage message) {
 
+        notificationService.saveNotification(message);
+        notificationService.sendRealTimeNotification(message);
+    }
+
+    @KafkaListener(topics = "book-room-topic", groupId = "alarm-api")
+    public void consumeBookRoom (NotificationMessage message) {
+
+        notificationService.saveNotification(message);
+        notificationService.sendRealTimeNotification(message);
+    }
+
+    @KafkaListener(topics = "calendar-topic", groupId = "alarm-api")
+    public void consumeCalendar (NotificationMessage message) {
+
+        notificationService.saveNotification(message);
+        notificationService.sendRealTimeNotification(message);
+    }
 }
