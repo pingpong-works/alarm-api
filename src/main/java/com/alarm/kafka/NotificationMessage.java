@@ -16,8 +16,9 @@ public class NotificationMessage {
     public enum NotificationType {
         APPROVAL,
         NOTICE,
-        CHAT,
-        EMAIL,
-        DOCUMENT;
+        DOCUMENT,
+        BOOK_CAR,
+        BOOK_ROOM,
+        CALENDAR;;
     }
 }

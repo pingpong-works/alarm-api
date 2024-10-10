@@ -1,10 +1,7 @@
 package com.alarm.notification;
 
 import com.alarm.kafka.NotificationMessage;
-import com.alarm.notification.entity.ApprovalNotification;
-import com.alarm.notification.entity.DocumentNotification;
-import com.alarm.notification.entity.NoticeNotification;
-import com.alarm.notification.entity.Notification;
+import com.alarm.notification.entity.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -39,7 +36,18 @@ public class NotificationService {
                 notification = new DocumentNotification();
                 ((DocumentNotification) notification).setDocumentId(message.getTypeId());
                 break;
-
+            case BOOK_CAR:
+                notification = new BookCarNotification();
+                ((BookCarNotification) notification).setBookCarId(message.getTypeId());
+                break;
+            case BOOK_ROOM:
+                notification = new BookRoomNotification();
+                ((BookRoomNotification) notification).setBookRoomId(message.getTypeId());
+                break;
+            case CALENDAR:
+                notification = new CalendarNotification();
+                ((CalendarNotification) notification).setCalendarId(message.getTypeId());
+                break;
             default:
                 throw new IllegalArgumentException("Unknown notification type: " + message.getType());
         }
