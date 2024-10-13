@@ -6,7 +6,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -65,7 +67,10 @@ public class NotificationService {
 
     public List<Notification> getUserNotifications(Long employeeId, boolean isRead) {
         // 사용자 알림 조회, 읽은/안 읽은 필터링
-        return notificationRepository.findByEmployeeIdAndIsRead(employeeId, isRead);
+        List<Notification> notifications = notificationRepository.findByEmployeeIdAndIsRead(employeeId, isRead);
+        return notifications.stream()
+                .sorted(Comparator.comparing(BaseNotification::getCreatedAt).reversed())
+                .collect(Collectors.toList());
     }
 
     public void markAsRead(Long notificationId) {

@@ -2,6 +2,7 @@ package com.alarm.notification;
 
 import com.alarm.notification.entity.Notification;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +14,7 @@ import java.util.List;
 @RequestMapping("/notifications")
 @RequiredArgsConstructor
 public class NotificationController {
-
+    private final NotificationMapper mapper;
     private final NotificationService notificationService;
     private final SseEmitterService sseEmitterService;
 
@@ -23,7 +24,7 @@ public class NotificationController {
                                            @RequestParam(required = false, defaultValue = "false") boolean isRead) {
         List<Notification> notifications = notificationService.getUserNotifications(employeeId, isRead);
 
-        return ResponseEntity.ok(notifications);
+        return ResponseEntity.ok(mapper.notificationsToResponses(notifications));
     }
 
     // 알림 읽음 처리
